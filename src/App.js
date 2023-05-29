@@ -13,16 +13,7 @@ const App = () => {
   const [profileLinks, setProfileLinks] = useState([])
   const [isLoading, setLoading] = useState(true)
 
-  console.log("--> loading whole: ", current_page);
-
-//   const incrementPage = () => {
-//     setPage((current_page) => current_page + 1)
-//   }
-//   const decrementPage = () => {
-//     setPage((current_page) => current_page - 1)
-//   }
-
-  const baseLink = "/ssnmlprofilelist.php?type=GI&search=search&profile_id=&profile_name=&photo=&get_gothiram=115,13,161&get_htfrom=&get_htto=&get_incometo=&from=22&to=26&placeofjob=&job_indiastate=&job_indiacity=&abrooad=&pr_star=&star=&tot_page="
+  const baseLink = process.env.REACT_APP_BASE_URL
   const getDetails = async (pageNumber) => {
     const html = await fetchData(baseLink + pageNumber);
     const [profiles, pages] = await parseSearchPageHTML(html);
@@ -53,7 +44,6 @@ const App = () => {
           </Grid>
         ): (
           <div height={1000} style={{
-            // do your styles depending on your needs.
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -79,7 +69,6 @@ const App = () => {
         color="primary"
         classes={{ ul: 'pagination' }}
       />
-      {console.log("rendering again", pagelinks)}
 
     </AppBar>
     </div>
