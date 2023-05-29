@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,34 +7,55 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 
+import parseContentHTML, {fetchData, parseCardHTML} from "./Scrape";
 
-function MyCard ({name, imageUrls, details, full_table, link="https://www.google.com"}) {
+
+const MyCard = ({ profile }) => {
+  const [data, setData] = useState([]);
+  const [imageURL, setImageURL] = useState([]);
+  const [name, setName] = useState([]);
+  const [details, setDetails] = useState([]);
+  const [profileLink, setProfileLink] = useState([])
+
+  const [expanded, setExpanded] = useState(false);
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+
+  const getCardDetails = async (profile) => {
+    const html = await fetchData(profile);
+    const [dat, nam, url] = parseContentHTML(html);
+    const [det, imgUrls] = parseCardHTML(html);
+
     let imageUrl = "";
-    if (Array.isArray(imageUrls) && imageUrls.length) { 
-      imageUrl = "https://ssmatri.com/" + imageUrls[0];
+    if (Array.isArray(imgUrls) && imgUrls.length) { 
+      imageUrl = "https://ssmatri.com/" + imgUrls[0];
     }
-    console.log("name: ", link)
-    // console.log("--> imageUrl: ", imageUrl, imageUrls)
-    // console.log(details.dob.toString())
-    // console.log(Array.isArray(details.dob))
-    // console.log(Array.from(details["dob"]))
+    else if (imgUrls.length) {
+      imageUrl = "https://ssmatri.com/" + imgUrls;
+    }
+    setImageURL(imageUrl)
+    setData(dat);
+    setName(nam);
+    setDetails(det);
+    setProfileLink(profile);
+  }
 
-    const [expanded, setExpanded] = useState(false);
-    const toggleExpansion = () => {
-      setExpanded(!expanded);
-    };
+  useEffect(() => {
+    getCardDetails(profile)
+  }, [profile]);
 
-    return (
+  return (
     <div>
       <Card raised sx={{borderRadius: '16px'}}>
-        {imageUrl.length ?
+        {imageURL.length ?
           (
             <CardMedia
               component="img"
               height="400"
               // width="100%"
               // height="50%"
-              image={imageUrl}
+              image={imageURL}
               alt="No Profile image"
               sx={{ padding: "1em 1em 1em 1em", objectFit: "contain" }}
             />
@@ -67,15 +88,16 @@ function MyCard ({name, imageUrls, details, full_table, link="https://www.google
             </TableContainer>
           <CardActions>
             <Button size="small" onClick={toggleExpansion}>{!expanded ? "More" : "Less"}</Button>
-            <Button size="small" href={"https://ssmatri.com/"+ link} target="_blank">Link</Button>
+            <Button size="small" href={"https://ssmatri.com/"+ profileLink} target="_blank">Link</Button>
           </CardActions>
           </Typography>
           {expanded && 
             <Typography variant="body2">
-              <TableContainer component={Paper}>
+              {/* <TableContainer component={Paper}> */}
+              <TableContainer component="div">
                 <Table>
                   <TableBody>
-                    {full_table.map((row, index) => (
+                    {data.map((row, index) => (
                       <TableRow key={index}>
                         {row.map((cell, index) => (
                           <TableCell key={index}>{cell}</TableCell>

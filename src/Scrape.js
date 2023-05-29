@@ -2,7 +2,7 @@
 const parseContentHTML = (htmlData) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlData, 'text/html');
-    // console.log("----> doc", doc)
+    // console.log("----> content doc", doc)
     const formBoxInner = doc.querySelector('div.form-box-inner');
     // console.log("----> formBoxInner", formBoxInner)
     const table = formBoxInner.querySelector('table');
@@ -29,7 +29,7 @@ const parseContentHTML = (htmlData) => {
 const parseCardHTML = (htmlData) => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlData, 'text/html');
-  // console.log("----> doc", doc)
+  // console.log("----> card doc", doc)
   const formBoxInner = doc.querySelector('div.form-box-inner');
   const tableMain = formBoxInner.querySelector('table.proview');
   const rows = tableMain.querySelectorAll('tr');
