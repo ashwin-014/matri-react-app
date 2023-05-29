@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/matri-react-app/static/js/main.7f533b60.js",
-    "index.html": "/matri-react-app/index.html",
-    "main.7f533b60.js.map": "/matri-react-app/static/js/main.7f533b60.js.map"
+    "main.js": "/static/js/main.7f533b60.js",
+    "index.html": "/index.html",
+    "main.7f533b60.js.map": "/static/js/main.7f533b60.js.map"
   },
   "entrypoints": [
     "static/js/main.7f533b60.js"
